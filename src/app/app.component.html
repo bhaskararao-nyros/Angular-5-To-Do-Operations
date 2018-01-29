@@ -1,0 +1,47 @@
+<!--The content below is only a placeholder and can be replaced.-->
+
+  <nav class="navbar navbar-default">
+    <div class="container-fluid">
+      <div class="navbar-header">
+        <a class="navbar-brand" routerLink="/">To Do</a>
+      </div>
+    </div>
+  </nav>
+  <div class="row">
+    <div class="col-md-6">
+      <h3 class="text-center">Create your <span class="badge main_badge">to-do's</span> list</h3>
+      <div class="create_todo">
+        <label>Name : </label>
+        <input type="text" name="name" class="form-control" [(ngModel)]="username">
+        <span *ngIf="nameErr" class="err">* Name required</span><br>
+        <label>Occupation : </label> 
+        <input type="text" name="occupation" class="form-control" [(ngModel)]="occupation">
+        <span *ngIf="occupationErr" class="err">* Occupation required</span><br>
+        <label>For : </label>
+        <select class="form-control" [(ngModel)]="day" (change)="dayOnChange()">
+          <option>Select</option>
+          <option>Today</option>
+          <option>Tomorrow</option>
+        </select>
+        <span *ngIf="dayErr" class="err">* Please select day </span>
+        <hr>
+        <label>Prepare your <span class="badge sub_badge">to-do</span> list</label> 
+        <input type="text" name="todo" class="form-control" [(ngModel)]="todos" (keydown)="createToDo($event)">
+        <span *ngIf="todosErr" class="err">* To do must required</span><br>
+        <button class="btn btn-sm btn-primary" (click)="createToDo('submit')">Add</button>
+      </div>
+    </div>
+    <div class="col-md-6">
+      <div>
+        <h3 class="text-center">Your <span class="badge main_badge">to-do's</span> list</h3>
+        <div class="create_todo">
+        <h4 *ngIf="infoHeader">{{occupation}} {{username}}'s <span class="badge main_badge">to-do</span> list for <b>{{day}}</b></h4>
+        <ol>
+          <li *ngFor="let todo of todos_arr">{{todo}}</li>
+        </ol>
+        </div>
+      </div>
+    </div>
+  </div>
+
+<router-outlet></router-outlet>
