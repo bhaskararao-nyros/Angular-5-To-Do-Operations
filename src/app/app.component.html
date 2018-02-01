@@ -8,36 +8,61 @@
     </div>
   </nav>
   <div class="row">
+                            <!-- CREATE TO DO FORM STARTING  -->
     <div class="col-md-6">
       <h3 class="text-center">Create your <span class="badge main_badge">to-do's</span> list</h3>
       <div class="create_todo">
         <label>Name : </label>
-        <input type="text" name="name" class="form-control" [(ngModel)]="username">
+        <input type="text" name="name" class="form-control" [(ngModel)]="username" (ngModelChange)="nameOnChange()" [ngClass]="nameErr ? 'border' : ''">
         <span *ngIf="nameErr" class="err">* Name required</span><br>
         <label>Occupation : </label> 
-        <input type="text" name="occupation" class="form-control" [(ngModel)]="occupation">
+        <input type="text" name="occupation" class="form-control" [(ngModel)]="occupation" (ngModelChange)="occupOnChange()" [ngClass]="occupationErr ? 'border' : ''">
         <span *ngIf="occupationErr" class="err">* Occupation required</span><br>
         <label>For : </label>
-        <select class="form-control" [(ngModel)]="day" (change)="dayOnChange()">
-          <option>Select</option>
+        <select class="form-control" [(ngModel)]="day" (ngModelChange)="dayOnChange()" [ngClass]="dayErr ? 'border' : ''">
+          <option value="select">Select</option>
           <option>Today</option>
           <option>Tomorrow</option>
         </select>
         <span *ngIf="dayErr" class="err">* Please select day </span>
         <hr>
         <label>Prepare your <span class="badge sub_badge">to-do</span> list</label> 
-        <input type="text" name="todo" class="form-control" [(ngModel)]="todos" (keydown)="createToDo($event)">
+        <input type="text" name="todo" class="form-control" [(ngModel)]="todos" (keydown)="createToDo($event)" (ngModelChange)="todoOnChange()" [ngClass]="todosErr ? 'border' : ''">
         <span *ngIf="todosErr" class="err">* To do must required</span><br>
         <button class="btn btn-sm btn-primary" (click)="createToDo('submit')">Add</button>
       </div>
     </div>
+                          <!-- CREATE TO DO FORM ENDING  -->
+
     <div class="col-md-6">
       <div>
         <h3 class="text-center">Your <span class="badge main_badge">to-do's</span> list</h3>
         <div class="create_todo">
         <h4 *ngIf="infoHeader">{{occupation}} {{username}}'s <span class="badge main_badge">to-do</span> list for <b>{{day}}</b></h4>
-        <ol>
-          <li *ngFor="let todo of todos_arr">{{todo}}</li>
+        <ul class="nav nav-tabs">
+          <li (click)="showTabs('incomplete')"><a [ngClass]="incompleteToDos ? 'bgcolor' : ''">Incomplete ({{inc_todos_arr.length}})</a></li>
+          <li (click)="showTabs('completed')"><a [ngClass]="completedToDos ? 'bgcolor' : ''">Completed ({{c_todos_arr.length}})</a></li>
+        </ul>
+        <ol *ngIf="incompleteToDos && !isIncArrZero">
+          <li *ngFor="let todo of inc_todos_arr; let i = index">
+          <span *ngIf="!editToDoInput || editToDoText !== todo">
+          <input id="checkbox" type="checkbox" name="todo" (change)="moveToDoToCmp(todo)">
+          {{todo}} <span class="inc_btns"><button class="btn btn-primary btn-xs inc_btn_1" (click)="editToDo(i,todo)">
+            <span class="glyphicon glyphicon-pencil"></span></button> <button class="btn btn-danger btn-xs" (click)="deleteInCmpTodo(i)">
+           <span class="glyphicon glyphicon-trash"></span></button></span>
+          </span><br>
+          <span *ngIf="editToDoInput && editToDoIndex === i">
+          <input type="text" name="edittodo" [(ngModel)]="updateToDoText" (keydown)="updateToDo($event,i)" id="edit_textbox"><br>
+          <span class="err" *ngIf="editToDoErr">* To Do required</span></span></li>
+        </ol>
+        <p style="padding: 10px;" *ngIf="incompleteToDos && isIncArrZero">No Data</p>
+        <p style="padding: 10px;" *ngIf="completedToDos && isCmpArrZero">No To-Do's Completed Yet</p>
+        <p *ngIf="incompleteToDos && moveToDoMsg" class="message"><span class="glyphicon glyphicon-ok"></span> Added to Completed List -<a class="undo" (click)="undoToDo()"> <b> UNDO</b></a></p>
+        <ol *ngIf="completedToDos">
+          <li *ngFor="let todo of c_todos_arr; let i = index">
+          <del>{{todo}}</del> 
+          <button class="btn btn-danger btn-xs cmp_btn" (click)="deleteCmpTodo(i)">
+          <span class="glyphicon glyphicon-trash"></span></button></li>
         </ol>
         </div>
       </div>

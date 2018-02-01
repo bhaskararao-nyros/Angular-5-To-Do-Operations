@@ -16,3 +16,42 @@
 .err {
 	color: red;
 }
+.border {
+	border:1px solid red;
+	box-shadow: 0px 0px 2px 0px red;
+}
+.create_todo ol li {
+	font-size: 17px;
+}
+#checkbox {
+	position: relative;
+	top: 3px;
+	margin-right: 5px;
+}
+.nav-tabs {
+	margin-bottom: 10px;
+	transition: 0.3s;
+}
+.nav-tabs li a {
+	background-color: #98baf2;
+	color: #fff;
+	border-bottom: 3px solid #98baf2;
+}
+.nav-tabs li a:hover {
+	cursor: pointer !important;
+}
+.nav-tabs li a.bgcolor {
+	background-color: #3769ba !important;
+	color: #fff !important;
+	transition: 0.5s;
+	border-bottom: 3px solid orangered;
+}
+.message {
+	color: green;
+}
+.undo {
+	cursor: pointer;
+}
+.inc_btns, .cmp_btn {
+	float: right;
+}
