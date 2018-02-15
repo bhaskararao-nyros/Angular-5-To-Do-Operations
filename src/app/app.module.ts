@@ -3,7 +3,6 @@ import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 import { HttpModule } from "@angular/http";
 
-import { NewsService } from './news.service';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 
 import {MatCheckboxModule} from '@angular/material/checkbox';
@@ -17,7 +16,6 @@ import { ModalModule } from 'ngx-bootstrap/modal';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 
 // Import filter
-import { FilterPipe } from './filter.pipe';
 import {TimeAgoPipe} from 'time-ago-pipe';
 
 // Auto-complete
@@ -32,7 +30,6 @@ const appRoutes: Routes = [
 @NgModule({
   declarations: [
     AppComponent,
-    FilterPipe,
     TimeAgoPipe,
   ],
   imports: [
@@ -49,7 +46,7 @@ const appRoutes: Routes = [
     MatSelectModule,
     MatInputModule
   ],
-  providers: [NewsService],
+  providers: [],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

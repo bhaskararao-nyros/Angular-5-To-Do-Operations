@@ -37,22 +37,23 @@
     <div class="col-md-6">
       <div>
         <h3 class="text-center">Your <span class="badge main_badge">to-do's</span> list</h3>
+                            <!-- DISPLAY TODAY'S TO DO LIST -->
         <div class="create_todo">
-        <h4 *ngIf="infoHeader">{{occupation}} {{username}}'s <span class="badge main_badge">to-do</span> list for <b>{{day}}</b></h4>
-        <ul class="nav nav-tabs">
-          <li (click)="showTabs('incomplete')"><a [ngClass]="incompleteToDos ? 'bgcolor' : ''">Incomplete ({{inc_todos_arr.length}})</a></li>
-          <li (click)="showTabs('completed')"><a [ngClass]="completedToDos ? 'bgcolor' : ''">Completed ({{c_todos_arr.length}})</a></li>
-        </ul>
+          <h4><span *ngIf="infoHeader">{{occupation}} {{username}}'s </span> <span class="badge main_badge">To-Do</span> list for <b>Today</b></h4>
+          <ul class="nav nav-tabs">
+            <li (click)="showTabs('incomplete')"><a [ngClass]="incompleteToDos ? 'bgcolor' : ''">Incomplete ({{inc_todos_arr.length}})</a></li>
+            <li (click)="showTabs('completed')"><a [ngClass]="completedToDos ? 'bgcolor' : ''">Completed ({{c_todos_arr.length}})</a></li>
+          </ul>
         <ol *ngIf="incompleteToDos && !isIncArrZero">
           <li *ngFor="let todo of inc_todos_arr; let i = index">
-          <span *ngIf="!editToDoInput || editToDoText !== todo">
+          <span *ngIf="!editToToDoInput || editToToDoIndex !== todo">
           <input id="checkbox" type="checkbox" name="todo" (change)="moveToDoToCmp(todo)">
-          {{todo}} <span class="inc_btns"><button class="btn btn-primary btn-xs inc_btn_1" (click)="editToDo(i,todo)">
+          {{todo}} <span class="inc_btns"><button class="btn btn-primary btn-xs inc_btn_1" (click)="editTodayToDo(i,todo)">
             <span class="glyphicon glyphicon-pencil"></span></button> <button class="btn btn-danger btn-xs" (click)="deleteInCmpTodo(i)">
            <span class="glyphicon glyphicon-trash"></span></button></span>
           </span><br>
-          <span *ngIf="editToDoInput && editToDoIndex === i">
-          <input type="text" name="edittodo" [(ngModel)]="updateToDoText" (keydown)="updateToDo($event,i)" id="edit_textbox"><br>
+          <span *ngIf="editToToDoInput && editToToDoIndex === i">
+          <input type="text" name="edittodo" [(ngModel)]="updateToToDoText" (keydown)="updateToToDo($event,i)" id="edit_textbox"><br>
           <span class="err" *ngIf="editToDoErr">* To Do required</span></span></li>
         </ol>
         <p style="padding: 10px;" *ngIf="incompleteToDos && isIncArrZero">No Data</p>
@@ -64,6 +65,25 @@
           <button class="btn btn-danger btn-xs cmp_btn" (click)="deleteCmpTodo(i)">
           <span class="glyphicon glyphicon-trash"></span></button></li>
         </ol>
+        </div>
+                                    <!-- DISPLAY TOMORROW'S TO DO LIST -->
+        <div class="create_todo">
+          <h4><span *ngIf="infoHeader">{{occupation}} {{username}}'s </span><span class="badge main_badge">To-Do</span> list for <b>Tomorrow</b></h4>
+          <ol>
+            <li *ngFor="let todo of tmrw_todos_arr; let i = index"> {{todo}} 
+              <span class="inc_btns">
+                  <button class="btn btn-primary btn-xs inc_btn_1" (click)="editTmrwToDo(i,todo)">
+                  <span class="glyphicon glyphicon-pencil"></span></button> 
+                  <button class="btn btn-danger btn-xs" (click)="delTmTodo(i)">
+                  <span class="glyphicon glyphicon-trash"></span></button>
+              </span>
+              <span *ngIf="editTmToDoInput && editTmToDoIndex === i">
+                <input type="text" name="edittodo" [(ngModel)]="updateTmToDoText" (keydown)="updateTmToDo($event,i)" id="edit_textbox"><br>
+                <span class="err" *ngIf="editToDoErr">* To Do required</span>
+              </span>
+            </li>
+          </ol>
+          <p style="padding: 10px;" *ngIf="isTmArrZero">Your To-Do list is empty</p>
         </div>
       </div>
     </div>

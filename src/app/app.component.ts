@@ -21,21 +21,31 @@ export class AppComponent {
 	incompleteToDos:boolean = true;
 	completedToDos:boolean = false;
 	isIncArrZero:boolean = false;
+  isTmArrZero:boolean = false;
 	isCmpArrZero:boolean = false;
-	editToDoInput:boolean = false;
+	editToToDoInput:boolean = false;
+  editTmToDoInput:boolean = false;
 	checkToDo:boolean = false;
 	editToDoErr:boolean = false;
 	moveToDoMsg:boolean = false;
-	updateToDoText:string;
+	updateToToDoText:string;
+  updateTmToDoText:string;
 	undoTodoText:string;
-	editToDoIndex:number;
+	editToToDoIndex:number;
+  editTmToDoIndex:number;
+
 	undotodoIndex:number;
 	inc_todos_arr = [
 	"Practising Java script components",
 	"Learning Jquery components",
 	"Learning angularjs routing",
 	];
+
 	c_todos_arr = ["Learning basic element structure"];
+
+	tmrw_todos_arr = [
+	"I will learn about ASP.NET",
+	"I will learn about JAVA.NET"]
 
   constructor() { }
 
@@ -69,8 +79,16 @@ export class AppComponent {
   			this.todosErr = true;
   		}
   		if (username && occupation && day && todos) {
-  			this.inc_todos_arr.push(todos);
-  			this.isIncArrZero = false;
+  			if (day === "Today") {
+  				this.inc_todos_arr.push(todos);
+  				this.isIncArrZero = false;	
+  			}
+
+  			if (day === "Tomorrow") {
+  				this.tmrw_todos_arr.push(todos);
+  				this.isIncArrZero = false;	
+  			}
+
   			this.todos = '';
   		}
   	}
@@ -83,10 +101,9 @@ export class AppComponent {
   	let day = this.day;
 
   	this.dayErr = false;
-  	this.inc_todos_arr = [];
   	if (username && occupation && day) {
-		this.infoHeader = true;
-	}
+			this.infoHeader = true;
+		}
   }
 
   // Username on change
@@ -128,7 +145,8 @@ export class AppComponent {
   	} else {
   		this.completedToDos = true;
   		this.incompleteToDos = false;
-  		this.editToDoInput = false;
+  		this.editToToDoInput = false;
+      this.editTmToDoInput = false;
   	}
   }
 
@@ -158,24 +176,46 @@ export class AppComponent {
 		}, 15000);
 }
 
-  // Edit to do
-  editToDo(i,todo) {
-  	this.editToDoInput = true;
+  // Edit today to do
+  editTodayToDo(i,todo) {
+  	this.editToToDoInput = true;
+    this.editTmToDoInput = false;
   	this.editToDoErr = false;
-  	this.updateToDoText = todo;
-  	this.editToDoIndex = i;
+  	this.updateToToDoText = todo;
+  	this.editToToDoIndex = i;
   }
 
-  // Update To Do 
-  updateToDo(e,i) {
+  // Edit tomorrow to do
+  editTmrwToDo(i,todo) {
+    this.editTmToDoInput = true;
+    this.editToToDoInput = false;
+    this.editToDoErr = false;
+    this.updateTmToDoText = todo;
+    this.editTmToDoIndex = i;
+  }
+
+  // Update Today To Do 
+  updateToToDo(e,i) {
   	if (e.keyCode == 13) {
-  		if (this.updateToDoText === '') {
+  		if (this.updateToToDoText === '') {
   			this.editToDoErr = true;
   		} else {
-  			this.inc_todos_arr.splice(i, 1, this.updateToDoText);
-  			this.editToDoInput = false;
+  			this.inc_todos_arr.splice(i, 1, this.updateToToDoText);
+  			this.editToToDoInput = false;
   		}
   	}
+  }
+
+  // Update tomorrow to-do
+  updateTmToDo(e,i) {
+    if (e.keyCode == 13) {
+      if (this.updateTmToDoText === '') {
+        this.editToDoErr = true;
+      } else {
+        this.tmrw_todos_arr.splice(i, 1, this.updateTmToDoText);
+        this.editTmToDoInput = false;
+      }
+    }
   }
 
   // Delete completed to-do's
@@ -191,11 +231,21 @@ export class AppComponent {
   // Delete incompleted to-do's
   deleteInCmpTodo(i) {
   	if(window.confirm('You want to delete this To-Do ?')){
-	 	this.inc_todos_arr.splice(i, 1);  
-	 	if (this.inc_todos_arr.length === 0) {
-	  		this.isIncArrZero = true;
-	  	}
-	}
+  	 	this.inc_todos_arr.splice(i, 1);  
+  	 	if (this.inc_todos_arr.length === 0) {
+  	  		this.isIncArrZero = true;
+  	  	}
+  	}
+  }
+
+  // Delete tomorrow to do
+  delTmTodo(i) {
+    if(window.confirm('You want to delete this To-Do ?')){
+       this.tmrw_todos_arr.splice(i, 1);  
+       if (this.tmrw_todos_arr.length === 0) {
+          this.isTmArrZero = true;
+        }
+    }
   }
 
   // Undo move to-do to completed list
@@ -212,24 +262,3 @@ export class AppComponent {
   	}
   } 
 }
-
-
-// setTimeout(() => {
-//   		if (index > -1) {
-// 		    this.inc_todos_arr.splice(index, 1);
-// 		}
-//   		this.c_todos_arr.push(todo);
-//   		this.moveToDoMsg = true;
-//   		$('.message').fadeIn(500);
-// 	}, 500);
-// 	if(this.inc_todos_arr.length === 1) {
-// 	  	 	this.inc_todos_arr.splice(-1,1)
-// 	  	}
-//   	this.isCmpArrZero = false;
-//   	setTimeout(() => {
-// 	     $('.message').fadeOut();
-// 	}, 15000);
-// 	console.log(this.inc_todos_arr)
-// 	if (this.inc_todos_arr.length === 0) {
-//   		this.isIncArrZero = true;
-//   	}
